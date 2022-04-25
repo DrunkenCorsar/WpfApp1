@@ -13,6 +13,7 @@ namespace WpfApp1.ViewModel
         public string CurrentItemName { get; set; }
         public delegate void OnStopMethod();
         public OnStopMethod OnStop { get; set; }
+        public bool IsAdmin { get; set; }
     }
 
     public class Stopper : ICommand
@@ -34,7 +35,7 @@ namespace WpfApp1.ViewModel
                 throw new ArgumentNullException(nameof(stopperParameter));
             }
             var service = new ServiceController(stopperParameter.CurrentItemName);
-            if (service.CanStop)
+            if (service.CanStop && stopperParameter.IsAdmin)
             {
                 service.Stop();
                 service.WaitForStatus(ServiceControllerStatus.Stopped, new TimeSpan(0, 0, 30));

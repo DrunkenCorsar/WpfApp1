@@ -26,7 +26,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <WrapPanel Name="mainControlPanel" Grid.Column="1" Width="250" Height="200" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <WrapPanel Name="mainControlPanel" Grid.Column="1" Width="250" Height="220" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Label Content="Service info" Width="150" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,0,0,0" FontSize="16" FontWeight="Bold"/>
             <Label Content="Name" Height="28" HorizontalAlignment="Left" Margin="0,10,0,0" x:Name="label2_Copy" VerticalAlignment="Top" Width="80" />
             <TextBox Height="24" HorizontalAlignment="Left" Margin="5,12,0,0" x:Name="txtName" VerticalAlignment="Top" Width="160" Text="{Binding SelectedItem.Name, ElementName=listViewServices}" IsReadOnly="False" />
@@ -62,6 +62,7 @@
                     </Style>
                 </Button.Style>
             </Button>
+            <Label Content="Please log in as Administrator!" Width="170" Margin="40,5,0,0" FontStyle="Italic" Visibility="{Binding Path=LogInAsAdminWarningVisibility}" />
         </WrapPanel>
     </Grid>
 </Window>

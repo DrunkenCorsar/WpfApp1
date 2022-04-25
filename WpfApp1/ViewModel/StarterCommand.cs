@@ -13,6 +13,7 @@ namespace WpfApp1.ViewModel
         public string CurrentItemName { get; set; }
         public delegate void OnStartMethod();
         public OnStartMethod OnStart { get; set; }
+        public bool IsAdmin { get; set; }
     }
 
     public class Starter : ICommand
@@ -28,17 +29,17 @@ namespace WpfApp1.ViewModel
 
         public void Execute(object parameter)
         {
-            var StarterParameter = (StarterParameter)parameter;
-            if (StarterParameter == null)
+            var starterParameter = (StarterParameter)parameter;
+            if (starterParameter == null)
             {
-                throw new ArgumentNullException(nameof(StarterParameter));
+                throw new ArgumentNullException(nameof(starterParameter));
             }
-            var service = new ServiceController(StarterParameter.CurrentItemName);
-            if (service.Status != ServiceControllerStatus.Running)
+            var service = new ServiceController(starterParameter.CurrentItemName);
+            if (service.Status != ServiceControllerStatus.Running && starterParameter.IsAdmin)
             {
                 service.Start();
                 service.WaitForStatus(ServiceControllerStatus.Running, new TimeSpan(0, 0, 30));
-                StarterParameter.OnStart();
+                starterParameter.OnStart();
             }
         }
 

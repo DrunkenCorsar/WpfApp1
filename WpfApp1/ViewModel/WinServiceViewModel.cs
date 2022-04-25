@@ -38,6 +38,19 @@ namespace WpfApp1.ViewModel
             }
         }
 
+        private static bool IsAdministrator()
+        {
+            WindowsIdentity identity = WindowsIdentity.GetCurrent();
+
+            if (null != identity)
+            {
+                WindowsPrincipal principal = new WindowsPrincipal(identity);
+                return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            }
+
+            return false;
+        }
+
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
             var newWinServicesList = new List<WinService>();
@@ -94,6 +107,21 @@ namespace WpfApp1.ViewModel
                 _WindowState = value; 
                 OnWindowStateChanged(); 
             } 
+        }
+
+        public Visibility LogInAsAdminWarningVisibility
+        {
+            get 
+            {
+                if (IsAdministrator())
+                {
+                    return Visibility.Hidden;
+                }
+                else
+                {
+                    return Visibility.Visible;
+                }
+            }
         }
 
         public int SelectedItemIndex
@@ -158,7 +186,7 @@ namespace WpfApp1.ViewModel
             {
                 if (_StopperParameter == null)
                 {
-                    _StopperParameter = new StopperParameter { CurrentItemName = SelectedItemName };
+                    _StopperParameter = new StopperParameter { CurrentItemName = SelectedItemName, IsAdmin = IsAdministrator() };
                     _StopperParameter.OnStop = new StopperParameter.OnStopMethod(StopSelectedService);
                 }
                 return _StopperParameter;
@@ -173,7 +201,7 @@ namespace WpfApp1.ViewModel
             {
                 if (_StarterParameter == null)
                 {
-                    _StarterParameter = new StarterParameter { CurrentItemName = SelectedItemName };
+                    _StarterParameter = new StarterParameter { CurrentItemName = SelectedItemName, IsAdmin = IsAdministrator() };
                     _StarterParameter.OnStart = new StarterParameter.OnStartMethod(StartSelectedService);
                 }
                 return _StarterParameter;
